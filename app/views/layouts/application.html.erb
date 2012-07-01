@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Depot</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body class='<%= controller.controller_name %>'>
+	<div id="banner">
+		<%= image_tag "logo.png", :title => "title", :class => "class" %>
+		<%= @page_title || "Pragmatic Bookshelf" %>
+	</div>
+	
+	<div id="columns">
+		<div id="side">
+			<ul>
+				<li><%= link_to "Home", store_path %></li>
+				<li><%= link_to "Questions", "#" %></li>
+				<li><%= link_to "News", "#" %></li>
+				<li><%= link_to "Contact", "#" %></li>
+			</ul>
+		</div>
+		<div id="main">
+			<%= yield %>	
+		</div>
+	</div>
+</body>
+</html>
