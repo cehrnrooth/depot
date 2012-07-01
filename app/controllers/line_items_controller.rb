@@ -42,11 +42,12 @@ class LineItemsController < ApplicationController
   def create
     @cart = current_cart
     product = Product.find(params[:product_id])    
-    @line_item = @cart.line_items.build(product: product)
+    @line_item = @cart.add_product(product.id)
 
     respond_to do |format|
       if @line_item.save
-        format.html { redirect_to @line_item.cart, notice: 'Line item was successfully created.' }
+        format.html { redirect_to store_url }
+        format.js   { @current_item = @line_item }
         format.json { render json: @line_item, status: :created, location: @line_item }
       else
         format.html { render action: "new" }
@@ -75,10 +76,15 @@ class LineItemsController < ApplicationController
   # DELETE /line_items/1.json
   def destroy
     @line_item = LineItem.find(params[:id])
-    @line_item.destroy
+    if @line_item.quantity >1
+      @line_item.update_attributes(:quantity => (@line_item.quantity-1))
+    else
+      @line_item.destroy
+    end
+      
 
     respond_to do |format|
-      format.html { redirect_to line_items_url }
+      format.html { redirect_to store_url }
       format.json { head :no_content }
     end
   end
